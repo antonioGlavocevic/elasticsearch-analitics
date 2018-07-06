@@ -1,2 +1,3 @@
 .DS_Store
 /elasticsearch/data/nodes
+/logstash/log/*.log
