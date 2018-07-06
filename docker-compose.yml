@@ -1,0 +1,40 @@
+version: '2'
+
+networks:
+  elasticsearch:
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    container_name: elasticsearch
+    networks:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:6.2.4
+    ports:
+      - 5044:5044
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/log:/usr/share/logstash/log
+    container_name: logstash
+    networks:
+      - elasticsearch
+
+  packetbeat:
+    image: docker.elastic.co/beats/packetbeat:6.2.4
+    volumes:
+      - ./packetbeat/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
+    container_name: packetbeat
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - elasticsearch
