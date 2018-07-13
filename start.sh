@@ -10,6 +10,7 @@ docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 \
 
 docker run -d --name logstash -p 9600:9600 -p 5044:5044 \
   -v $DIR/logstash/pipeline:/usr/share/logstash/pipeline \
+  -v $DIR/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
   -v $DIR/logstash/log:/usr/share/logstash/log \
   docker.elastic.co/logstash/logstash-oss:6.2.4
 

@@ -24,6 +24,7 @@ services:
       - 5044:5044
     volumes:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/log:/usr/share/logstash/log
     container_name: logstash
     networks:
