@@ -2,13 +2,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 \
+docker run -d --name elasticsearch -p 127.0.0.1:9200:9200 -p 9300:9300 \
   -v $DIR/elasticsearch/data:/usr/share/elasticsearch/data \
   -v $DIR/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
   -e "discovery.type=single-node" \
   docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
 
-docker run -d --name logstash -p 9600:9600 -p 5044:5044 \
+docker run -d --name logstash -p 127.0.0.1:9600:9600 -p 5044:5044 \
   -v $DIR/logstash/pipeline:/usr/share/logstash/pipeline \
   -v $DIR/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
   -v $DIR/logstash/log:/usr/share/logstash/log \
