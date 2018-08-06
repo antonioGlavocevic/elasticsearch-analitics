@@ -17,3 +17,7 @@ docker run -d --name logstash -p 127.0.0.1:9600:9600 -p 127.0.0.1:5044:5044 \
 docker run -d --name packetbeat --network host --cap-add=NET_ADMIN \
   -v $DIR/packetbeat/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml \
   docker.elastic.co/beats/packetbeat:6.2.4
+
+docker run -d --name kibana -p 5601:5601 \
+  -e "ELASTICSEARCH_URL=http://172.17.0.2:9200" \
+  docker.elastic.co/kibana/kibana-oss:6.2.4
