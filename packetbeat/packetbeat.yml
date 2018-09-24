@@ -40,11 +40,26 @@ packetbeat.protocols:
   send_headers: ["Cookie", "Set-Cookie"]
   split_cookie: true
   include_body_for: ["application/json"]
+  processors:
+  - drop_event:
+      when:
+        not:
+          equals:
+            path: "/courses/course/_search"
+  - drop_fields:
+      fields: ["http.response.body"]
 
 #==================== Elasticsearch template setting ==========================
 
+#setup.template.name: "packetbeat"
+#setup.template.fields: "myFields.yml"
+#setup.template.overwrite: false
+# setup.template.json.enabled: true
+# setup.template.json.path: "myFields.json"
+# setup.template.json.name: "packetbeat-template"
 setup.template.settings:
   index.number_of_shards: 1
+  index.number_of_replicas: 0
   #index.codec: best_compression
   #_source.enabled: false
 
@@ -80,10 +95,17 @@ setup.dashboards.enabled: false
 
 # Configure what output to use when sending the data collected by the beat.
 
+#------------------------------ File output -----------------------------------
+# output.file: 
+#   path: "."
+#   filename: packetbeat_out
+
 #-------------------------- Elasticsearch output ------------------------------
-#output.elasticsearch:
+output.elasticsearch:
   # Array of hosts to connect to.
-  #hosts: ["localhost:9200"]
+  hosts: ["localhost:9200"]
+  #hosts: ["higheravenues.hyperfabric.xyz:9200"]
+  pipeline: "test-pipeline"
   #index: "packetbeat-%{[beat.version]}-%{+yyyy.MM.dd}"
   #index: "packetbeat-%{[beat.version]}"
 
@@ -93,6 +115,6 @@ setup.dashboards.enabled: false
   #password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-output.logstash:
-  # The Logstash hosts
-  hosts: ["localhost:5044"]
+# output.logstash:
+#   # The Logstash hosts
+#   hosts: ["localhost:5044"]
